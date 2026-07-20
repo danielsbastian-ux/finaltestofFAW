@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final Examination — Academic Writing (ELLE 2208)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Kalam:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#141F35; --navy-2:#1C2C4B; --navy-3:#233560;
+  --cream:#F2EEDD; --cream-dim:#B9B6A4;
+  --rule:rgba(242,238,221,0.10); --rule-strong:rgba(242,238,221,0.22);
+  --red:#D96257; --red-dim:#8C3F37; --gold:#D9A441;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--cream);font-family:'Spectral',serif;}
+h1,h2,h3{font-weight:600;margin:0;}
+p{line-height:1.7;color:var(--cream-dim);}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);}
+.pen{font-family:'Kalam',cursive;color:var(--red);}
+.wrap{max-width:760px;margin:0 auto;padding:0 28px;}
+.screen{display:none;padding:64px 0 100px;animation:fadein .5s ease;}
+.screen.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+label{display:block;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.04em;margin-bottom:8px;}
+.qnum{color:var(--red-dim);margin-right:6px;}
+input[type=text], textarea{
+  width:100%;background:var(--navy-2);border:1px solid var(--rule-strong);color:var(--cream);
+  font-family:'Spectral',serif;font-size:15px;padding:12px 14px;border-radius:4px;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+input[type=text]:focus, textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(217,164,65,0.15);}
+textarea{resize:vertical;min-height:70px;line-height:1.6;}
+.field{margin-bottom:22px;}
+.field.flash input, .field.flash textarea{border-color:var(--red);animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+.hint{font-size:12px;color:var(--cream-dim);margin-top:6px;font-family:'IBM Plex Mono',monospace;}
+.wc{font-size:11px;color:var(--cream-dim);text-align:right;margin-top:4px;font-family:'IBM Plex Mono',monospace;}
+.wc.warn{color:var(--red);}
+
+button{font-family:'IBM Plex Mono',monospace;cursor:pointer;border-radius:20px;transition:all .2s ease;}
+.btn-primary{
+  background:var(--red);border:1px solid var(--red);color:var(--navy);
+  font-size:13px;letter-spacing:.05em;padding:13px 34px;font-weight:500;text-transform:uppercase;
+}
+.btn-primary:hover{background:#c95446;}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+.btn-ghost{
+  background:transparent;border:1px solid var(--rule-strong);color:var(--cream-dim);
+  font-size:13px;padding:13px 34px;
+}
+.btn-ghost:hover{border-color:var(--cream-dim);color:var(--cream);}
+
+/* start screen */
+.start-card{background:var(--navy-2);border:1px solid var(--rule-strong);border-radius:6px;padding:44px;margin-top:36px;}
+.exam-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);margin:32px 0;}
+.exam-meta div{padding:16px;border-right:1px solid var(--rule);}
+.exam-meta div:last-child{border-right:none;}
+.exam-meta .num{font-family:'IBM Plex Mono',monospace;font-size:20px;color:var(--cream);}
+.exam-meta .lbl{font-size:11px;color:var(--cream-dim);text-transform:uppercase;margin-top:2px;}
+.rules{font-size:13px;color:var(--cream-dim);line-height:1.9;margin-top:20px;}
+.rules b{color:var(--cream);}
+
+/* sticky header during exam */
+.exam-header{
+  position:sticky;top:0;z-index:20;background:var(--navy);border-bottom:1px solid var(--rule-strong);
+  padding:14px 0;
+}
+.exam-header .wrap{display:flex;align-items:center;justify-content:space-between;}
+.who{font-size:13px;color:var(--cream-dim);}
+.who b{color:var(--cream);}
+.timer{
+  font-family:'IBM Plex Mono',monospace;font-size:22px;font-variant-numeric:tabular-nums;
+  color:var(--cream);padding:6px 16px;border:1px solid var(--rule-strong);border-radius:20px;
+}
+.timer.low{color:var(--red);border-color:var(--red-dim);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+.progress-bar{height:3px;background:var(--rule);}
+.progress-fill{height:100%;width:0%;background:var(--gold);transition:width .3s ease;}
+
+section.block{padding:52px 0;border-top:1px solid var(--rule);}
+.block .eyebrow{display:block;margin-bottom:8px;}
+.block h2{font-size:22px;margin-bottom:6px;}
+
+.topics{display:flex;flex-direction:column;gap:10px;margin-top:24px;}
+.topic-opt{
+  background:var(--navy-2);border:1px solid var(--rule-strong);border-radius:4px;padding:16px 18px;
+  cursor:pointer;transition:border-color .2s ease;
+}
+.topic-opt:hover{border-color:var(--red-dim);}
+.topic-opt.selected{border-color:var(--red);background:var(--navy-3);}
+.topic-opt input{display:none;}
+.topic-opt .t-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;}
+.topic-opt .t-name{font-style:italic;color:var(--cream);font-size:15.5px;margin-top:4px;}
+.topic-opt .t-desc{font-size:12.5px;color:var(--cream-dim);margin-top:6px;line-height:1.5;}
+
+.reminder-banner{
+  display:none;background:var(--navy-2);border:1px solid var(--red);border-radius:4px;
+  padding:16px 20px;margin-bottom:28px;font-size:13.5px;color:var(--cream);
+}
+.reminder-banner.show{display:block;}
+.reminder-banner .pen{font-size:15px;}
+
+.submit-row{display:flex;justify-content:center;padding:60px 0 20px;}
+
+/* modals / overlays */
+.overlay{
+  position:fixed;inset:0;background:rgba(10,15,26,0.88);z-index:100;
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.overlay.show{display:flex;}
+.modal{
+  background:var(--navy-2);border:1px solid var(--rule-strong);border-radius:8px;
+  max-width:460px;width:100%;padding:36px;text-align:center;
+}
+.modal .icon{font-family:'Kalam',cursive;font-size:34px;color:var(--red);margin-bottom:14px;}
+.modal h3{font-size:18px;margin-bottom:12px;}
+.modal p{font-size:14px;margin-bottom:22px;}
+.modal .btn-row{display:flex;gap:12px;justify-content:center;}
+
+.done-screen{text-align:center;padding-top:90px;}
+.done-screen .icon{font-family:'Kalam',cursive;font-size:44px;color:var(--red);margin-bottom:18px;}
+
+@media (max-width:640px){
+  .exam-meta{grid-template-columns:1fr;}
+  .exam-meta div{border-right:none;border-bottom:1px solid var(--rule);}
+  .exam-header .wrap{flex-direction:column;gap:10px;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" style="display:none;"><div class="progress-fill" id="progress-fill"></div></div>
+
+<!-- ============ START SCREEN ============ -->
+<div class="screen active" id="screen-start">
+  <div class="wrap">
+    <span class="eyebrow">Academic writing (ELLE 2208) &middot; UAS</span>
+    <h1 style="font-size:36px;margin-top:12px;">Final <span class="pen">Examination</span></h1>
+    <p style="margin-top:12px;max-width:520px;">Individual, closed-book examination. English Literature Department &middot; Supplementary Even 2025/2026.</p>
+
+    <div class="exam-meta">
+      <div><div class="num">120</div><div class="lbl">minutes</div></div>
+      <div><div class="num">100</div><div class="lbl">points</div></div>
+      <div><div class="num">20%</div><div class="lbl">final grade</div></div>
+    </div>
+
+    <div class="start-card">
+      <label><span class="qnum"></span>Full name</label>
+      <div class="field">
+        <input type="text" id="input-name" placeholder="e.g. Siti Rahmawati">
+      </div>
+      <label style="margin-top:6px;">Student ID</label>
+      <div class="field" style="margin-bottom:6px;">
+        <input type="text" id="input-id" placeholder="e.g. 2023110045">
+      </div>
+      <p class="rules">
+        <b>Not allowed:</b> mobile phones, internet access, AI tools, translation apps, collaboration.<br>
+        <b>Anti-cheating notice:</b> switching tabs or minimizing this window is monitored. You get <b>one</b> warning &mdash; a second occurrence will lock and auto-submit your exam.<br>
+        <b>Mandatory:</b> the E-A-P-E outline sheet must be completed in full, or up to 10 points may be deducted.
+      </p>
+      <div style="margin-top:28px;">
+        <button class="btn-primary" id="btn-start">Start exam</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXAM SCREEN ============ -->
+<div class="screen" id="screen-exam">
+  <div class="exam-header">
+    <div class="wrap">
+      <div class="who"><b id="who-name"></b> &middot; ID <span id="who-id"></span></div>
+      <div class="timer" id="timer-display">120:00</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="reminder-banner" id="reminder-banner">
+      <span class="pen">Not quite ready to submit &mdash;</span>
+      <span id="reminder-text"></span>
+    </div>
+
+    <section class="block">
+      <span class="eyebrow">Part A &middot; step 1</span>
+      <h2><span class="qnum">1.</span>Choose one essay topic</h2>
+      <p style="margin-top:6px;">300&ndash;400 words. Introduction, two E&#8209;A&#8209;P&#8209;E body paragraphs, conclusion.</p>
+      <div class="topics" id="topic-list">
+        <label class="topic-opt" data-q="1">
+          <input type="radio" name="topic" value="Topic 1: Descriptive / Listing-Order — The Benefits of Learning English in the Digital Age">
+          <div class="t-eyebrow">Topic 1 &middot; descriptive / listing-order</div>
+          <div class="t-name">The benefits of learning English in the digital age</div>
+          <div class="t-desc">Career opportunities, access to information, global communication &mdash; support each benefit with examples.</div>
+        </label>
+        <label class="topic-opt" data-q="1">
+          <input type="radio" name="topic" value="Topic 2: Process — How to Develop Effective Study Habits for University Students">
+          <div class="t-eyebrow">Topic 2 &middot; process</div>
+          <div class="t-name">How to develop effective study habits for university students</div>
+          <div class="t-desc">Use sequence transitions and explain why each step matters.</div>
+        </label>
+        <label class="topic-opt" data-q="1">
+          <input type="radio" name="topic" value="Topic 3: Cause and Effect — The Impact of Social Media on Modern Communication">
+          <div class="t-eyebrow">Topic 3 &middot; cause and effect</div>
+          <div class="t-name">The impact of social media on modern communication</div>
+          <div class="t-desc">Positive and negative effects, supported with real-world examples.</div>
+        </label>
+        <label class="topic-opt" data-q="1">
+          <input type="radio" name="topic" value="Topic 4: Comparison / Contrast — Traditional Classroom Learning vs. Online Learning">
+          <div class="t-eyebrow">Topic 4 &middot; comparison / contrast</div>
+          <div class="t-name">Traditional classroom learning vs. online learning</div>
+          <div class="t-desc">Advantages and disadvantages of each, concluding with your reasoned position.</div>
+        </label>
+        <label class="topic-opt" data-q="1">
+          <input type="radio" name="topic" value="Topic 5: Opinion / Persuasive — The Importance of Learning a Second Language">
+          <div class="t-eyebrow">Topic 5 &middot; opinion / persuasive</div>
+          <div class="t-name">The importance of learning a second language</div>
+          <div class="t-desc">Address a counterargument &mdash; AI translation or English's global dominance.</div>
+        </label>
+      </div>
+    </section>
+
+    <section class="block">
+      <span class="eyebrow">Part A &middot; step 2 &middot; mandatory</span>
+      <h2>E&#8209;A&#8209;P&#8209;E outline sheet</h2>
+      <p style="margin-top:6px;">Complete every field. Missing this may deduct up to 10 points.</p>
+
+      <div class="field"><label><span class="qnum">2.</span>Topic (restate your chosen topic)</label>
+        <input type="text" data-req data-q="2" id="q2"></div>
+      <div class="field"><label><span class="qnum">3.</span>Hook / background</label>
+        <textarea data-req data-q="3" id="q3"></textarea></div>
+      <div class="field"><label><span class="qnum">4.</span>Thesis statement</label>
+        <textarea data-req data-q="4" id="q4"></textarea></div>
+
+      <h3 style="font-size:15px;color:var(--gold);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin:30px 0 14px;">Body paragraph 1</h3>
+      <div class="field"><label><span class="qnum">5.</span>Topic sentence (the "point")</label>
+        <textarea data-req data-q="5" id="q5"></textarea></div>
+      <div class="field"><label><span class="qnum">6.</span>Evidence 1</label>
+        <textarea data-req data-q="6" id="q6"></textarea></div>
+      <div class="field"><label><span class="qnum">7.</span>Analysis 1</label>
+        <textarea data-req data-q="7" id="q7"></textarea></div>
+      <div class="field"><label><span class="qnum">8.</span>Pivot</label>
+        <textarea data-req data-q="8" id="q8"></textarea></div>
+      <div class="field"><label><span class="qnum">9.</span>Evidence 2</label>
+        <textarea data-req data-q="9" id="q9"></textarea></div>
+      <div class="field"><label><span class="qnum">10.</span>Analysis 2</label>
+        <textarea data-req data-q="10" id="q10"></textarea></div>
+      <div class="field"><label><span class="qnum">11.</span>Echo</label>
+        <textarea data-req data-q="11" id="q11"></textarea></div>
+
+      <h3 style="font-size:15px;color:var(--gold);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin:30px 0 14px;">Body paragraph 2</h3>
+      <div class="field"><label><span class="qnum">12.</span>Topic sentence (the "point")</label>
+        <textarea data-req data-q="12" id="q12"></textarea></div>
+      <div class="field"><label><span class="qnum">13.</span>Evidence 1</label>
+        <textarea data-req data-q="13" id="q13"></textarea></div>
+      <div class="field"><label><span class="qnum">14.</span>Analysis 1</label>
+        <textarea data-req data-q="14" id="q14"></textarea></div>
+      <div class="field"><label><span class="qnum">15.</span>Pivot</label>
+        <textarea data-req data-q="15" id="q15"></textarea></div>
+      <div class="field"><label><span class="qnum">16.</span>Evidence 2</label>
+        <textarea data-req data-q="16" id="q16"></textarea></div>
+      <div class="field"><label><span class="qnum">17.</span>Analysis 2</label>
+        <textarea data-req data-q="17" id="q17"></textarea></div>
+      <div class="field"><label><span class="qnum">18.</span>Echo</label>
+        <textarea data-req data-q="18" id="q18"></textarea></div>
+
+      <h3 style="font-size:15px;color:var(--gold);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin:30px 0 14px;">Conclusion</h3>
+      <div class="field"><label><span class="qnum">19.</span>Restate thesis (in new words)</label>
+        <textarea data-req data-q="19" id="q19"></textarea></div>
+      <div class="field"><label><span class="qnum">20.</span>Summarize main points</label>
+        <textarea data-req data-q="20" id="q20"></textarea></div>
+      <div class="field"><label><span class="qnum">21.</span>Final thought / recommendation / prediction</label>
+        <textarea data-req data-q="21" id="q21"></textarea></div>
+    </section>
+
+    <section class="block">
+      <span class="eyebrow">Part A &middot; step 3</span>
+      <h2><span class="qnum">22.</span>Final essay</h2>
+      <p style="margin-top:6px;">Write your complete essay: introduction, both body paragraphs, conclusion. Target 300&ndash;400 words.</p>
+      <div class="field" style="margin-top:18px;">
+        <textarea data-req data-q="22" id="q22" style="min-height:340px;" oninput="updateWordCount('q22','wc22',300,400,50)"></textarea>
+        <div class="wc" id="wc22">0 words</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <span class="eyebrow">Part B &middot; writer's reflection</span>
+      <h2><span class="qnum">23.</span>Reflection paragraph</h2>
+      <p style="margin-top:6px;">Address: your most significant improvement, a challenge you overcame, and the E-A-P-E skill you've mastered most. Target 150&ndash;200 words.</p>
+      <div class="field" style="margin-top:18px;">
+        <textarea data-req data-q="23" id="q23" style="min-height:200px;" oninput="updateWordCount('q23','wc23',150,200,25)"></textarea>
+        <div class="wc" id="wc23">0 words</div>
+      </div>
+    </section>
+
+    <div class="submit-row">
+      <button class="btn-primary" id="btn-submit" style="min-width:200px;">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONFIRM (Yes/No) ============ -->
+<div class="overlay" id="overlay-confirm">
+  <div class="modal">
+    <div class="icon">?</div>
+    <h3>Before you send this in</h3>
+    <p>Your answers will be reviewed manually by your instructor &mdash; there is no automatic grading. Do you want to submit now?</p>
+    <div class="btn-row">
+      <button class="btn-ghost" id="btn-confirm-no">No, go back</button>
+      <button class="btn-primary" id="btn-confirm-yes">Yes, submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ WARNING (1st violation) ============ -->
+<div class="overlay" id="overlay-warning">
+  <div class="modal">
+    <div class="icon">!</div>
+    <h3>Tab switch detected</h3>
+    <p>Leaving this exam window is monitored. This is your <b style="color:var(--cream)">one warning</b> &mdash; if it happens again, your exam will be locked and submitted automatically as-is.</p>
+    <div class="btn-row">
+      <button class="btn-primary" id="btn-warning-ack">I understand</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LOCKED (2nd violation) ============ -->
+<div class="overlay" id="overlay-locked">
+  <div class="modal">
+    <div class="icon">&times;</div>
+    <h3>Exam locked</h3>
+    <p>A second tab-switch was detected. Your exam has been locked and submitted automatically with your current answers.</p>
+  </div>
+</div>
+
+<!-- ============ DONE ============ -->
+<div class="screen" id="screen-done">
+  <div class="wrap done-screen">
+    <div class="icon">&check;</div>
+    <h2 style="font-size:26px;">Your exam has been submitted</h2>
+    <p style="margin-top:14px;max-width:440px;margin-left:auto;margin-right:auto;">It will be reviewed manually by your instructor. You may now close this window.</p>
+    <p class="hint" style="margin-top:24px;" id="done-note"></p>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7BfJM2ve-wdNEvGS17cumQbc_5zb8zSrbATrWatYxDkYklDC3ZEm13jRztoFffo9LSQ/exec";
+
+const EXAM_SECONDS = 120 * 60;
+let remaining = EXAM_SECONDS;
+let timerId = null;
+let violations = 0;
+let submissionType = "normal";
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  const name = document.getElementById('input-name').value.trim();
+  const id = document.getElementById('input-id').value.trim();
+  if(!name || !id){
+    [document.getElementById('input-name'), document.getElementById('input-id')].forEach(el=>{
+      if(!el.value.trim()){
+        el.parentElement.classList.add('flash');
+        setTimeout(()=>el.parentElement.classList.remove('flash'), 500);
+      }
+    });
+    return;
+  }
+  document.getElementById('who-name').textContent = name;
+  document.getElementById('who-id').textContent = id;
+  document.getElementById('progress-bar').style.display = 'block';
+  showScreen('screen-exam');
+  window.scrollTo(0,0);
+  startTimer();
+  updateProgress();
+});
+
+function formatTime(s){
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const sec = (s%60).toString().padStart(2,'0');
+  return m + ':' + sec;
+}
+
+function startTimer(){
+  const display = document.getElementById('timer-display');
+  timerId = setInterval(() => {
+    remaining--;
+    if(remaining <= 0){
+      clearInterval(timerId);
+      remaining = 0;
+      display.textContent = "00:00";
+      submissionType = "auto-time-expired";
+      forceSubmit();
+      return;
+    }
+    display.textContent = formatTime(remaining);
+    if(remaining <= 300){ display.classList.add('low'); }
+  }, 1000);
+}
+
+document.querySelectorAll('.topic-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.topic-opt').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    opt.querySelector('input').checked = true;
+    updateProgress();
+  });
+});
+
+function updateWordCount(fieldId, wcId, targetMin, targetMax, tolerance){
+  const text = document.getElementById(fieldId).value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  const wcEl = document.getElementById(wcId);
+  const acceptMin = targetMin - tolerance;
+  const acceptMax = targetMax + tolerance;
+  wcEl.textContent = words + ' words (target ' + targetMin + '\u2013' + targetMax +
+    ', accepted ' + acceptMin + '\u2013' + acceptMax + ')';
+  wcEl.classList.toggle('warn', words > 0 && (words < acceptMin || words > acceptMax));
+  updateProgress();
+}
+
+document.querySelectorAll('[data-req]').forEach(el => {
+  el.addEventListener('input', updateProgress);
+});
+
+function getRequiredFields(){
+  const fields = [];
+  fields.push({q:1, kind:'topic', el: document.querySelector('input[name="topic"]:checked')});
+  document.querySelectorAll('[data-req]').forEach(el => {
+    fields.push({q: parseInt(el.getAttribute('data-q'),10), kind:'text', el});
+  });
+  return fields.sort((a,b)=>a.q-b.q);
+}
+
+function updateProgress(){
+  const fields = getRequiredFields();
+  let answered = 0;
+  fields.forEach(f => {
+    if(f.kind === 'topic'){ if(f.el) answered++; }
+    else { if(f.el.value.trim().length > 0) answered++; }
+  });
+  document.getElementById('progress-fill').style.width = (answered/fields.length*100) + '%';
+}
+
+function validateAll(){
+  const fields = getRequiredFields();
+  const missing = [];
+  fields.forEach(f => {
+    if(f.kind === 'topic'){ if(!f.el) missing.push(1); }
+    else { if(f.el.value.trim().length === 0) missing.push(f.q); }
+  });
+  return missing;
+}
+
+document.getElementById('btn-submit').addEventListener('click', () => {
+  const missing = validateAll();
+  const banner = document.getElementById('reminder-banner');
+  if(missing.length > 0){
+    document.getElementById('reminder-text').textContent =
+      'please answer question' + (missing.length > 1 ? 's ' : ' ') + missing.join(', ') + ' before submitting.';
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'center'});
+    const firstField = getRequiredFields().find(f => missing[0] === f.q);
+    if(firstField && firstField.el && firstField.el.focus){
+      setTimeout(()=>firstField.el.focus(), 400);
+    }
+    return;
+  }
+  banner.classList.remove('show');
+  document.getElementById('overlay-confirm').classList.add('show');
+});
+
+document.getElementById('btn-confirm-no').addEventListener('click', () => {
+  document.getElementById('overlay-confirm').classList.remove('show');
+});
+
+document.getElementById('btn-confirm-yes').addEventListener('click', () => {
+  document.getElementById('overlay-confirm').classList.remove('show');
+  submissionType = "normal";
+  finalizeSubmit();
+});
+
+function collectData(){
+  const topicEl = document.querySelector('input[name="topic"]:checked');
+  return {
+    Name: document.getElementById('who-name').textContent,
+    StudentID: document.getElementById('who-id').textContent,
+    ChosenTopic: topicEl ? topicEl.value : '',
+    Outline_Topic: document.getElementById('q2').value,
+    Outline_Hook: document.getElementById('q3').value,
+    Outline_Thesis: document.getElementById('q4').value,
+    BP1_TopicSentence: document.getElementById('q5').value,
+    BP1_Evidence1: document.getElementById('q6').value,
+    BP1_Analysis1: document.getElementById('q7').value,
+    BP1_Pivot: document.getElementById('q8').value,
+    BP1_Evidence2: document.getElementById('q9').value,
+    BP1_Analysis2: document.getElementById('q10').value,
+    BP1_Echo: document.getElementById('q11').value,
+    BP2_TopicSentence: document.getElementById('q12').value,
+    BP2_Evidence1: document.getElementById('q13').value,
+    BP2_Analysis1: document.getElementById('q14').value,
+    BP2_Pivot: document.getElementById('q15').value,
+    BP2_Evidence2: document.getElementById('q16').value,
+    BP2_Analysis2: document.getElementById('q17').value,
+    BP2_Echo: document.getElementById('q18').value,
+    Conclusion_Restate: document.getElementById('q19').value,
+    Conclusion_Summary: document.getElementById('q20').value,
+    Conclusion_FinalThought: document.getElementById('q21').value,
+    FinalEssay: document.getElementById('q22').value,
+    WritersReflection: document.getElementById('q23').value,
+    TabSwitchViolations: violations,
+    SubmissionType: submissionType
+  };
+}
+
+function finalizeSubmit(){
+  if(timerId) clearInterval(timerId);
+  const data = collectData();
+  if(SCRIPT_URL && SCRIPT_URL.indexOf('PASTE_YOUR') === -1){
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(data)
+    }).catch(() => {});
+  }
+  const note = document.getElementById('done-note');
+  if(submissionType === 'auto-time-expired'){
+    note.textContent = 'Submitted automatically because the 120-minute timer reached zero.';
+  } else if(submissionType === 'auto-violation'){
+    note.textContent = 'Submitted automatically after a second tab-switch violation.';
+  } else {
+    note.textContent = '';
+  }
+  showScreen('screen-done');
+  window.scrollTo(0,0);
+}
+
+function forceSubmit(){
+  document.getElementById('overlay-confirm').classList.remove('show');
+  document.getElementById('overlay-warning').classList.remove('show');
+  finalizeSubmit();
+}
+
+/* anti-cheating: visibility change (tab switch / minimize) */
+document.addEventListener('visibilitychange', () => {
+  if(document.hidden && document.getElementById('screen-exam').classList.contains('active')){
+    violations++;
+    if(violations === 1){
+      document.getElementById('overlay-warning').classList.add('show');
+    } else if(violations >= 2){
+      document.querySelectorAll('#screen-exam input, #screen-exam textarea, #screen-exam button').forEach(el => el.disabled = true);
+      document.getElementById('overlay-locked').classList.add('show');
+      submissionType = "auto-violation";
+      setTimeout(forceSubmit, 1200);
+    }
+  }
+});
+
+document.getElementById('btn-warning-ack').addEventListener('click', () => {
+  document.getElementById('overlay-warning').classList.remove('show');
+});
+</script>
+</body>
+</html>
