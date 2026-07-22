@@ -565,6 +565,19 @@ document.addEventListener('visibilitychange', () => {
 document.getElementById('btn-warning-ack').addEventListener('click', () => {
   document.getElementById('overlay-warning').classList.remove('show');
 });
+
+/* spelling: keep the red underline visible, but block the one-click
+   "did you mean..." suggestion popup so it can't be used as an answer key */
+document.querySelectorAll('[data-req]').forEach(el => {
+  el.setAttribute('spellcheck', 'true');   // native red squiggly underline stays on
+  el.setAttribute('autocomplete', 'off');  // no browser-remembered predictions
+  el.setAttribute('autocorrect', 'off');   // no silent auto-fix (Safari/iOS)
+  el.setAttribute('autocapitalize', 'off');
+  el.setAttribute('data-gramm', 'false');  // opts out of Grammarly's suggestion overlay
+  el.setAttribute('data-gramm_editor', 'false');
+  el.setAttribute('data-enable-grammarly', 'false');
+  el.addEventListener('contextmenu', (e) => e.preventDefault()); // blocks right-click "fix spelling" menu
+});
 </script>
 </body>
 </html>
